@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { uploadDocument, fetchAnswer } from "../utils/api";
+import { uploadDocument } from "@/app/api/upload";
+import { fetchAnswer } from "@/app/api/fetchAnswer";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,29 +12,26 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function QuestionForm() {
   const [docId, setDocId] = useState<string | null>(null);
   const [question, setQuestion] = useState("");
-  const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true); // Ensures the component is mounted before rendering client-side data
-  }, []);
-
+  // Mutation for file upload
   const uploadMutation = useMutation({
     mutationFn: uploadDocument,
     onSuccess: (data) => setDocId(data.doc_id),
   });
 
-  const getAnswerMutation = useMutation({
-    mutationFn: () => fetchAnswer(question, docId!),
+  // Mutation for fetching answer
+  const answerMutation = useMutation({
+    mutationFn: async () => {
+      if (!docId) throw new Error("No document uploaded");
+      return fetchAnswer(question, docId);
+    },
   });
 
+  // File upload handler using react-dropzone
   const { getRootProps, getInputProps } = useDropzone({
     accept: { "application/pdf": [".pdf"] },
     onDrop: (acceptedFiles) => uploadMutation.mutate(acceptedFiles[0]),
   });
-
-  if (!isMounted) {
-    return null; // Prevents hydration mismatch by skipping rendering on SSR
-  }
 
   return (
     <div className="max-w-xl mx-auto p-4">
@@ -64,20 +62,26 @@ export default function QuestionForm() {
           disabled={!docId}
         />
 
+        {/* Get Answer Button */}
         <Button
           className="mt-4 w-full"
-          onClick={() => getAnswerMutation.mutate()}
-          disabled={!docId || getAnswerMutation.isPending}
+          onClick={() => answerMutation.mutate()}
+          disabled={!docId || answerMutation.isPending}
         >
-          {getAnswerMutation.isPending ? "Processing..." : "Get Answer"}
+          {answerMutation.isPending ? "Processing..." : "Get Answer"}
         </Button>
 
         {/* Display Answer */}
-        {getAnswerMutation.data && (
+        {answerMutation.data && (
           <CardContent className="mt-4">
             <p className="font-semibold">Answer:</p>
-            <p className="text-blue-600">{getAnswerMutation.data.answer}</p>
+            <p className="text-blue-600">{answerMutation.data.answer}</p>
           </CardContent>
+        )}
+
+        {/* Error Message */}
+        {answerMutation.isError && (
+          <p className="text-red-500 mt-2">{answerMutation.error?.message}</p>
         )}
       </Card>
     </div>
