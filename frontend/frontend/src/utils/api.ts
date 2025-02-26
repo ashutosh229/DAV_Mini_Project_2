@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000";  // Backend URL
+const API_BASE_URL = "http://localhost:8080";  // Backend URL
 
 export const uploadDocument = async (file: File) => {
   const formData = new FormData();
