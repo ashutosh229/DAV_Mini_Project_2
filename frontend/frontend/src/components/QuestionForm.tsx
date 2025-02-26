@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { uploadDocument, fetchAnswer } from "../utils/api";
 import { useDropzone } from "react-dropzone";
@@ -10,14 +11,17 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function QuestionForm() {
   const [docId, setDocId] = useState<string | null>(null);
   const [question, setQuestion] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Mutation for file upload
+  useEffect(() => {
+    setIsMounted(true); // Ensures the component is mounted before rendering client-side data
+  }, []);
+
   const uploadMutation = useMutation({
     mutationFn: uploadDocument,
     onSuccess: (data) => setDocId(data.doc_id),
   });
 
-  // Mutation for fetching answer
   const getAnswerMutation = useMutation({
     mutationFn: () => fetchAnswer(question, docId!),
   });
@@ -26,6 +30,10 @@ export default function QuestionForm() {
     accept: { "application/pdf": [".pdf"] },
     onDrop: (acceptedFiles) => uploadMutation.mutate(acceptedFiles[0]),
   });
+
+  if (!isMounted) {
+    return null; // Prevents hydration mismatch by skipping rendering on SSR
+  }
 
   return (
     <div className="max-w-xl mx-auto p-4">
