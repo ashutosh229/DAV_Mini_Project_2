@@ -2,9 +2,9 @@
 module.exports = {
   darkMode: "class",
   content: [
-    "./app/**/*.{ts,tsx}", // Next.js App Router
-    "./components/**/*.{ts,tsx}", // UI Components
-    "./lib/**/*.{ts,tsx}", // Utility files
+    "./app/**/*.{ts,tsx,js,jsx}", // Next.js App Router
+    "./components/**/*.{ts,tsx,jsx,js}", // UI Components
+    "./lib/**/*.{ts,tsx,js,jsx}", // Utility files
   ],
   theme: {
     extend: {
