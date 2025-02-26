@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from transformers import pipeline
 import fitz  # PyMuPDF
 
-
 app = FastAPI()
 
 # Load the NLP model
