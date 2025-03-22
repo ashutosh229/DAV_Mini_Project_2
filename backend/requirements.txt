@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+faiss-cpu
+pymupdf
+sentence-transformers
+psycopg2
+sqlalchemy
+openai
+langdetect
+chromadb
+pydantic
