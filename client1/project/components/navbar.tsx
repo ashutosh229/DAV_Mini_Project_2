@@ -45,7 +45,7 @@ export function Navbar() {
           <FileText className="h-6 w-6" />
           <span className="text-xl font-bold">DocuQuery</span>
         </div>
-        <nav className="mx-6 flex items-center space-x-4 lg:space-x-6 hidden md:flex">
+        <nav className="mx-6 flex items-center space-x-4 lg:space-x-6  md:flex">
           <Link
             href="/"
             className="text-sm font-medium transition-colors hover:text-primary"

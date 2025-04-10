@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/hero-section";
 import { FeaturesSection } from "@/components/features-section";
 import { FileUpload } from "@/components/file-upload";
-import { QuestionForm } from "@/components/question-form";
-import { AnswerDisplay } from "@/components/answer-display";
+import { QuestionForm } from "@/components/QuestionForm";
+import { AnswerDisplay } from "@/components/AnswerCard";
 import { Footer } from "@/components/footer";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -27,12 +27,12 @@ export default function Home() {
   const handleAskQuestion = async (questionText: string) => {
     setIsLoading(true);
     setQuestion(questionText);
-    
+
     try {
       // Simulate API call to backend
       // In a real implementation, this would be a fetch to your FastAPI backend
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // Mock response - this would come from your backend in a real implementation
       const mockAnswer = `Based on the document "${file?.name}", the answer to your question "${questionText}" is:
       
@@ -45,7 +45,7 @@ The document-based question answering system would:
 4. Generate a precise answer from the document's information
 
 In a production environment, this would leverage natural language processing and machine learning to extract the most relevant information from your document.`;
-      
+
       setAnswer(mockAnswer);
       toast.success("Answer generated successfully!");
     } catch (error) {
@@ -59,10 +59,10 @@ In a production environment, this would leverage natural language processing and
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      
+
       <main className="flex-1">
         <HeroSection />
-        
+
         <section id="upload-section" className="py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
@@ -80,29 +80,26 @@ In a production environment, this would leverage natural language processing and
                   Upload a document and ask questions to get instant answers.
                 </p>
               </motion.div>
-              
+
               <div className="space-y-8">
                 <FileUpload onFileUpload={handleFileUpload} />
-                
-                <QuestionForm 
-                  onAskQuestion={handleAskQuestion} 
+
+                <QuestionForm
+                  onAskQuestion={handleAskQuestion}
                   isFileUploaded={!!file}
                 />
-                
+
                 {question && answer && (
-                  <AnswerDisplay 
-                    question={question} 
-                    answer={answer}
-                  />
+                  <AnswerDisplay question={question} answer={answer} />
                 )}
               </div>
             </div>
           </div>
         </section>
-        
+
         <FeaturesSection />
       </main>
-      
+
       <Footer />
     </div>
   );
