@@ -12,20 +12,6 @@ This question answering system allows users to access the information of the pre
 
 The complete code implementation for this project is available in a Google Colab notebook:
 
-[Access the Question Answering System Notebook](# Document-Based Question Answering System
-
-## Overview
-
-This repository contains a document-based question answering system that can extract relevant answers from provided documents based on user queries. The system leverages natural language processing and machine learning techniques to understand documents and generate accurate responses to questions.
-
-## Project Description
-
-This question answering system allows users to upload documents and ask questions about their content. The system processes the documents, builds a knowledge base, and then answers questions by retrieving and synthesizing information from the uploaded documents.
-
-## Implementation
-
-The complete code implementation for this project is available in a Google Colab notebook:
-
 [Access the Question Answering System Notebook](https://colab.research.google.com/drive/1VC4zm_elBa_vck5y2Er_dWOa90hHTKBk?usp=sharing)
 
 ## Features
